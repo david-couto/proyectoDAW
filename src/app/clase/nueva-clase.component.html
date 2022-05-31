@@ -1,0 +1,31 @@
+<div class="container">
+    <div class="row mt-5">
+        <div class="p-grid p-fluid">
+            <form (ngSubmit)="onCreate()"  #f="ngForm">
+                       
+                <div class="p-field p-col-12 p-md-3">
+                    <p-dropdown name="actividad" [options]="actividades" [(ngModel)]="clase.actividad" placeholder="Actividad" optionLabel="name"
+	                [showClear]="true"></p-dropdown>
+                </div>
+                <div class="p-field p-col-12 p-md-3">
+                    <p-dropdown name="monitor" [options]="monitores" [(ngModel)]="clase.monitor" placeholder="Monitor" optionLabel="name"
+	                [showClear]="true"></p-dropdown>
+                </div>
+                
+                <div class="p-field p-col-12 p-md-4">
+                    <label for="icon">Fecha</label>
+                    <p-calendar name="fecha" [(ngModel)]="clase.fechaClase" [minDate]="hoy" [disabledDays]="[0]" [showIcon]="true" inputId="icon" dateFormat="yy/mm/dd" ></p-calendar>
+                </div>
+                <div class="p-field p-col-12 p-md-4">
+                    <label for="timeonly">HoraInicio</label>
+                    <p-calendar name="hora" [(ngModel)]="clase.horaInicio" [timeOnly]="true" [minDate]="hoy"  inputId="timeonly"></p-calendar>
+                </div>
+              
+                <button  pButton  pRipple (click)="onCreate()" type="button" label="Submit" class="p-button-raised p-button-success" [disabled]="!f.valid" ></button>
+                <button pButton pRipple type="button" label="Volver" class="p-button-raised p-button-warning" routerLink="/actividades"></button>
+               
+            </form>
+        </div>
+    </div>
+</div>
+

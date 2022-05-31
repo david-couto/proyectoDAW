@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { TokenService } from './service/token.service';
 
 @Component({
   selector: 'app-root',
@@ -7,4 +8,9 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'gimnasio-app';
+  isLogged = false;
+  constructor(private tokenService: TokenService) { }
+  ngOnInit() {
+    this.isLogged = this.tokenService.isLogged();
+  }
 }

@@ -1,0 +1,196 @@
+<p-table #dt1 [value]="clases" dataKey="id" [rows]="10" [showCurrentPageReport]="true"
+	[rowsPerPageOptions]="[10,25,50]" [loading]="loading" styleClass="p-datatable-clases p-datatable-gridlines"
+	[paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+	[globalFilterFields]="['actividad.nombre','actividad.categoria','actividad.dificultad','monitor','fechaClase','horaInicio','horaFin','numAsistentes']">
+	<ng-template pTemplate="caption">
+		<div class="p-d-flex">
+			<span class="p-input-icon-left p-ml-auto">
+                <i class="pi pi-search"></i>
+				<input pInputText type="text" (input)="dt1.filterGlobal($event.target.value, 'contains')" placeholder="Search keyword" />
+            </span>
+		</div>
+	</ng-template>
+	<ng-template pTemplate="header">
+		<tr>
+		
+			<th pSortableColumn="nombre" >
+				<div class="p-d-flex p-jc-between p-ai-center">
+					Nombre Actividad <p-sortIcon field="nombre"> </p-sortIcon>
+					<p-columnFilter field="actividad.nombre" matchMode="equals" display="menu">
+						<ng-template pTemplate="filter" let-value let-filter="filterCallback">
+							<p-dropdown [ngModel]="value" [options]="actividades" (onChange)="filter($event.value)"
+								placeholder="Any">
+								<ng-template let-option pTemplate="item">
+									<span [class]="'customer-badge status-' + option.value">{{option.label}}</span>
+								</ng-template>
+							</p-dropdown>
+						</ng-template>
+					</p-columnFilter>
+				</div>
+			</th>		
+			<th pSortableColumn="dificultad" >
+				<div class="p-d-flex p-jc-between p-ai-center">
+					Dificultad <p-sortIcon field="dificultad"> </p-sortIcon>
+					<p-columnFilter field="actividad.dificultad" matchMode="equals" display="menu">
+						<ng-template pTemplate="filter" let-value let-filter="filterCallback">
+							<p-dropdown [ngModel]="value" [options]="dificultades" (onChange)="filter($event.value)"
+								placeholder="Any">
+								<ng-template let-option pTemplate="item">
+									<span [class]="'customer-badge status-' + option.value">{{option.label}}</span>
+								</ng-template>
+							</p-dropdown>
+						</ng-template>
+					</p-columnFilter>
+				</div>
+			</th>
+			<th pSortableColumn="categoria" >
+				<div class="p-d-flex p-jc-between p-ai-center">
+					Categoria <p-sortIcon field="categoria"> </p-sortIcon>
+					<p-columnFilter field="actividad.categoria" matchMode="equals" display="menu">
+						<ng-template pTemplate="filter" let-value let-filter="filterCallback">
+							<p-dropdown [ngModel]="value" [options]="categorias" (onChange)="filter($event.value)"
+								placeholder="Any">
+								<ng-template let-option pTemplate="item">
+									<span [class]="'customer-badge status-' + option.value">{{option.label}}</span>
+								</ng-template>
+							</p-dropdown>
+						</ng-template>
+					</p-columnFilter>
+				</div>
+			</th>
+            <th pSortableColumn="monitor" >
+				<div class="p-d-flex p-jc-between p-ai-center">
+					Monitor <p-sortIcon field="monitor"> </p-sortIcon>
+					<p-columnFilter field="monitor" matchMode="equals" display="menu">
+						<ng-template pTemplate="filter" let-value let-filter="filterCallback">
+							<p-dropdown [ngModel]="value" [options]="monitores" (onChange)="filter($event.value)"
+								placeholder="Any">
+								<ng-template let-option pTemplate="item">
+									<span [class]="'customer-badge status-' + option.value">{{option.label}}</span>
+								</ng-template>
+							</p-dropdown>
+						</ng-template>
+					</p-columnFilter>
+				</div>
+			</th>
+            <th pSortableColumn="fechaClase" >
+				<div class="p-d-flex p-jc-between p-ai-center">
+					Fecha <p-sortIcon field="fechaClase"> </p-sortIcon>
+					<p-columnFilter type="date" field="fechaClase" display="menu" dateFormat='dd/MM/yyyy'></p-columnFilter>
+				</div>
+			</th>
+            <th pSortableColumn="horaInicio" >
+				<div class="p-d-flex p-jc-between p-ai-center">
+					Hora inicio <p-sortIcon field="horaInicio"></p-sortIcon> 
+					<p-columnFilter type="text" field="horaInicio" display="menu"></p-columnFilter>
+				</div>
+			</th>
+            <th pSortableColumn="horaFin" >
+				<div class="p-d-flex p-jc-between p-ai-center">
+					Hora Fin <p-sortIcon field="horaFin"> </p-sortIcon>
+					<p-columnFilter type="text" field="horaFin" display="menu"></p-columnFilter>
+				</div>
+			</th>
+            <th pSortableColumn="asistentes" >
+				<div class="p-d-flex p-jc-between p-ai-center">
+					Asistentes <p-sortIcon field="asistentes"> </p-sortIcon>
+					<p-columnFilter type="numeric" field="numAsistentes" display="menu"></p-columnFilter>
+				</div>
+			</th>
+            <th >
+                <div class="p-d-flex p-jc-between p-ai-center">
+				Apuntarse
+            </div>
+			</th>
+			<th *ngIf="isAdmin || isEmp">
+                <div class="p-d-flex p-jc-between p-ai-center">
+				Editar
+            </div>
+			</th>
+			<th *ngIf="isEmp">
+                <div class="p-d-flex p-jc-between p-ai-center">
+				Eliminar
+            </div>
+			</th>
+            
+		</tr>
+	</ng-template>
+	<ng-template pTemplate="body" let-clases>
+		<tr>
+			
+			<td>
+				<span class="image-text">{{clases.actividad.nombre}}</span>
+			</td>
+			<td>
+				<span [class]="'customer-badge status-' + clases.actividad.dificultad">{{clases.actividad.dificultad}}</span>
+			</td>
+			<td>
+				<span [class]="'customer-badge status-' + clases.actividad.categoria">{{clases.actividad.categoria}}</span>
+			</td>
+			<td>
+				<span [class]="'customer-badge status-' + clases.monitor">{{clases.monitor}}</span>
+			</td>
+            <td>
+				{{clases.fechaClase | date: 'dd/MM/yyyy'}}
+			</td>
+            <td>
+				{{clases.horaInicio}}
+			</td>
+            <td>
+				{{clases.horaFin}}
+			</td>
+            <td>
+				{{clases.numAsistentes}}/{{clases.actividad.numMaxAsistentes}}
+			</td>
+            <th >
+                <p-button *ngIf="(estaApuntadoEnClase(clases))?true:false"  label="Desapuntarse" icon="pi pi-new" (onClick)="updateAsistenteClase(clases.id)"  ></p-button>
+				
+                <p-button *ngIf="(!estaApuntadoEnClase(clases))?true:false"  [disabled]="(clases.numAsistentes>=clases.actividad.numMaxAsistentes || estaImpartiendoClase(clases)) ? true:false" label="Apuntarse" icon="pi pi-new" (onClick)="updateAsistenteClase(clases.id)"  ></p-button>
+                
+                
+			</th>
+			<td *ngIf="(isAdmin || estaImpartiendoClase(clases))">
+				
+				<p-button (click)="showModalDialog(clases.id)" icon="pi pi-external-link" label="Editar clase"></p-button>
+				<p-dialog header="Editar clase" [(visible)]="displayModal" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+    				[draggable]="false" [resizable]="true">
+					<form (ngSubmit)="onEditarClase(clase)"  #f="ngForm" class="p-m-0">
+                       
+						<div class="p-field p-col-12 p-md-3">
+							<input id="disabled-input" *ngIf="displayModal" name="nombre" type="text" pInputText [disabled]="disabled" [(ngModel)]="clase.actividad.nombre" />
+						</div>
+						<div class="p-field p-col-12 p-md-3">
+							<p-dropdown  name="monitor" *ngIf="displayModal && isAdmin" name="monitor" [options]="monitores" [(ngModel)]="clase.monitor" placeholder="Monitor" optionLabel="name"
+							[showClear]="true"></p-dropdown>
+							<input id="disabled-input-monitor" *ngIf="displayModal && !isAdmin " name="monitor" type="text" pInputText [disabled]="disabled" [(ngModel)]="clase.monitor" />
+						</div>
+						
+						<div class="p-field p-col-12 p-md-4">
+							<label for="icon">Fecha</label>
+							<p-calendar name="fecha" *ngIf="displayModal" name="fecha" [disabledDays]="[0]" [(ngModel)]="clase.fechaClase" [minDate]="hoy" [showIcon]="true" inputId="icon" dateFormat="yy/mm/dd" ></p-calendar>
+						</div>
+						<div class="p-field p-col-12 p-md-4">
+							<label for="timeonly">HoraInicio</label>
+							<p-calendar name="hora"  *ngIf="displayModal" name ="hora" [(ngModel)]="clase.horaInicio" [timeOnly]="true" [minDate]="hoy" inputId="timeonly"></p-calendar>
+						</div>
+					</form>
+						<ng-template pTemplate="footer">
+							<p-button icon="pi pi-check" (click)="onEditarClase(clase)" label="Editar" class="p-button-text"></p-button>
+							<p-button icon="pi pi-times" (click)="closeModalDialog()" label="Cerrar"></p-button>
+						</ng-template>
+					
+				</p-dialog>
+				
+			</td>
+			<td *ngIf="(isAdmin || estaImpartiendoClase(clases))">
+				<p-button label="Eliminar" icon="pi pi-new" (click)="onDelete(clases.id)"  ></p-button>
+			</td>
+		</tr>
+	</ng-template>
+	<ng-template pTemplate="emptymessage">
+		<tr>
+			<td colspan="7">No hay actividades</td>
+		</tr>
+	</ng-template>
+</p-table>
+<p-button label="Crear Clase" icon="pi pi-new" [routerLink]="['/nuevaClase']"  *ngIf="isAdmin || isEmp"></p-button>

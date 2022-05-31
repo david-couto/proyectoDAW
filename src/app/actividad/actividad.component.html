@@ -1,0 +1,161 @@
+<p-table #dt1 [value]="actividades" dataKey="id" [rows]="10" [showCurrentPageReport]="true"
+	[rowsPerPageOptions]="[10,25,50]" [loading]="loading" styleClass="p-datatable-actividades p-datatable-gridlines"
+	[paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+	[globalFilterFields]="['nombre','categoria','dificultad']">
+	<ng-template pTemplate="caption">
+		<div class="p-d-flex">
+			<span class="p-input-icon-left p-ml-auto">
+				<i class="pi pi-search"></i>
+				<input pInputText type="text" (input)="dt1.filterGlobal($event.target.value, 'contains')"
+					placeholder="Search keyword" />
+			</span>
+		</div>
+	</ng-template>
+	<ng-template pTemplate="header">
+		<tr>	
+			<th pSortableColumn="nombre" >
+				<div class="p-d-flex p-jc-between p-ai-center">
+					Nombre  <p-sortIcon field="nombre"> </p-sortIcon>
+					<p-columnFilter type="text" field="nombre" display="menu"></p-columnFilter>
+					<!-- <p-columnFilter field="nombre" matchMode="in" display="menu" [showMatchModes]="false"
+						[showOperator]="false" [showAddButton]="false">
+						<ng-template pTemplate="header">
+							<div class="p-px-3 p-pt-3 p-pb-0">
+								<span class="p-text-bold">Nombre de la clase</span>
+							</div>
+						</ng-template>
+						<ng-template pTemplate="filter" let-value let-filter="filterCallback">
+							<p-multiSelect [ngModel]="value" [options]="nombres" placeholder="Any"
+								(onChange)="filter($event.value)" optionLabel="nombre">
+								<ng-template let-option pTemplate="item">
+									<div class="p-multiselect-representative-option">
+										<span class="p-ml-1">{{option.name}}</span>
+									</div>
+								</ng-template>
+							</p-multiSelect>
+						</ng-template>
+					</p-columnFilter> -->
+				</div>
+			</th>
+			<th pSortableColumn="dificultad" >
+				<div class="p-d-flex p-jc-between p-ai-center">
+					Dificultad  <p-sortIcon field="dificultad"> </p-sortIcon>
+					<p-columnFilter field="dificultad" matchMode="equals" display="menu">
+						<ng-template pTemplate="filter" let-value let-filter="filterCallback">
+							<p-dropdown [ngModel]="value" [options]="dificultades" (onChange)="filter($event.value)"
+								placeholder="Any">
+								<ng-template let-option pTemplate="item">
+									<span [class]="'customer-badge status-' + option.value">{{option.label}}</span>
+								</ng-template>
+							</p-dropdown>
+						</ng-template>
+					</p-columnFilter>
+				</div>
+			</th>
+			<th pSortableColumn="categoria" >
+				<div class="p-d-flex p-jc-between p-ai-center">
+					Categoria  <p-sortIcon field="categoria"> </p-sortIcon>
+					<p-columnFilter field="categoria" matchMode="equals" display="menu">
+						<ng-template pTemplate="filter" let-value let-filter="filterCallback">
+							<p-dropdown [ngModel]="value" [options]="categorias" (onChange)="filter($event.value)"
+								placeholder="Any">
+								<ng-template let-option pTemplate="item">
+									<span [class]="'customer-badge status-' + option.value">{{option.label}}</span>
+								</ng-template>
+							</p-dropdown>
+						</ng-template>
+					</p-columnFilter>
+				</div>
+			</th>
+			<th pSortableColumn="duracion" >
+				<div class="p-d-flex p-jc-between p-ai-center">
+					Duracion  <p-sortIcon field="duracion"> </p-sortIcon>
+					<p-columnFilter field="duracion" matchMode="between" display="menu" [showMatchModes]="false"
+						[showOperator]="false" [showAddButton]="false">
+						<ng-template pTemplate="filter" let-filter="filterCallback">
+							<p-slider [ngModel]="activityValues" [range]="true" (onSlideEnd)="filter($event.values)"
+								styleClass="p-m-3"></p-slider>
+							<div class="p-d-flex p-ai-center p-jc-between p-px-2">
+								<span>{{activityValues[0]}}</span>
+								<span>{{activityValues[1]}}</span>
+							</div>
+						</ng-template>
+					</p-columnFilter>
+				</div>
+			</th>
+			<th *ngIf="isAdmin">
+				Editar
+			</th>
+			<th *ngIf="isAdmin">
+				Eliminar
+			</th>
+			<th *ngIf="isAdmin || isEmp">
+				Crear clase
+			</th>
+		</tr>
+	</ng-template>
+	<ng-template pTemplate="body" let-actividades>
+		<tr>
+			
+			<td>
+				<span class="image-text">{{actividades.nombre}}</span>
+			</td>
+			<td>
+				<span [class]="'customer-badge status-' + actividades.dificultad">{{actividades.dificultad}}</span>
+			</td>
+			<td>
+				<span [class]="'customer-badge status-' + actividades.categoria">{{actividades.categoria}}</span>
+			</td>
+			<td>
+				<p-progressBar [value]="actividades.duracion" [showValue]="false"></p-progressBar>
+			</td>
+			<td *ngIf="isAdmin">
+				<p-button label="Editar" icon="pi pi-new" routerLink="/editarActividad/{{actividades.id}}"></p-button>
+			</td>
+			<td *ngIf="isAdmin">
+				<p-button label="Eliminar" icon="pi pi-new" (click)="onDelete(actividades.id)"></p-button>
+				
+			</td>
+			<td *ngIf="isAdmin || isEmp">
+				
+				<p-button (click)="showModalDialog(actividades)" icon="pi pi-external-link" label="Crear Clase"></p-button>
+				<p-dialog [(visible)]="displayModal" [modal]="true" [style]="{width: '50vw',height:'80vw'}" [baseZIndex]="10000"
+    				[draggable]="false" [resizable]="true" blockScroll="true">
+					<form (ngSubmit)="onCrearClase()"  #f="ngForm" class=" text-center ">
+						
+							<label class="block text-900 font-medium mb-2" for="icon">Fecha: </label>
+							<p-calendar  name="fecha" *ngIf="displayModal" name="fecha" [minDate]="hoy" [(ngModel)]="clase.fechaClase" [minDate]="hoy" [showIcon]="true" inputId="icon" dateFormat="yy/mm/dd" ></p-calendar>
+						
+						
+							<label class="block text-900 font-medium mb-2" for="disabled-input">Nombre:  </label>
+							<input id="disabled-input" *ngIf="displayModal" name="nombre" type="text" pInputText [disabled]="true" [(ngModel)]="clase.actividad.nombre" />
+						
+							<label class="block text-900 font-medium mb-2" for="monitor">Monitor: </label>
+							<p-dropdown  name="monitor" *ngIf="displayModal && isAdmin" name="monitor" [options]="monitores" [(ngModel)]="clase.monitor" placeholder="Monitor" optionLabel="name"
+							[showClear]="true"></p-dropdown>
+							<input id="disabled-input-monitor" *ngIf="displayModal && !isAdmin " name="monitor" type="text" pInputText [disabled]="true" [(ngModel)]="clase.monitor.nombre" />
+						
+						
+							<label class="block text-900 font-medium mb-2" for="timeonly">HoraInicio: </label>
+							<p-calendar  name="hora"  *ngIf="displayModal" name ="hora" [minDate]="hoy" [(ngModel)]="clase.horaInicio" [timeOnly]="true" [minDate]="hoy"  inputId="timeonly"></p-calendar>
+						
+						
+						
+					</form>
+						<ng-template pTemplate="footer" class="center">
+							<p-button icon="pi pi-check" (click)="onCrearClase()" label="Crear" class="p-button-text"></p-button>
+							<p-button icon="pi pi-times" (click)="closeModalDialog()" label="Cerrar"></p-button>
+						</ng-template>
+					
+				</p-dialog>
+				
+			</td>
+		</tr>
+	</ng-template>
+	<ng-template pTemplate="emptymessage">
+		<tr>
+			<td colspan="7">No hay actividades</td>
+		</tr>
+	</ng-template>
+</p-table>
+<p-button label="Crear actividad" icon="pi pi-new" [routerLink]="['/nuevaActividad']" *ngIf="isAdmin"></p-button>

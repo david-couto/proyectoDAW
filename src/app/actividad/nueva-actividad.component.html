@@ -1,0 +1,37 @@
+<div class="container">
+    <div class="row mt-5">
+        <div class="p-grid p-fluid">
+            <form (ngSubmit)="onCreate()"  #f="ngForm">
+                <div class="p-field p-col-3 p-md-3">
+                    <span class="p-float-label">
+                        <input id="nombre" type="text" pInputText [(ngModel)]="actividad.nombre" name="nombre" required> 
+                        <label for="nombre">Nombre</label>
+                    </span>
+                </div>
+                
+                <div class="p-field p-col-12 p-md-3">
+                    <p-dropdown name="categoria" [options]="categorias" [(ngModel)]="actividad.categoria" placeholder="Categoria" optionLabel="name"
+	                [showClear]="true"></p-dropdown>
+                </div>
+                <div class="p-field p-col-12 p-md-3">
+                    <p-dropdown name="dificultad" [options]="dificultades" [(ngModel)]="actividad.dificultad" placeholder="Dificultad" optionLabel="name"
+	                [showClear]="true"></p-dropdown>
+                </div>
+                
+                <div class="p-field p-col-12 p-md-3">
+                    <label for="duracion">Duracion</label>
+                    <p-inputNumber name="duracion" [(ngModel)]="actividad.duracion" [step]="5" suffix=" minutos"[showButtons]="true" inputId="duracion" [min]="30" [max]="90">
+                    </p-inputNumber>
+                </div>
+                <div class="p-field p-col-12 p-md-3">
+                    <label for="numeroAsistentes">Numero Maximo de asistentes</label>
+                    <p-inputNumber name="numMaxAsistentes" [(ngModel)]="actividad.numMaxAsistentes" [step]="1" [showButtons]="true" inputId="numeroAsistentes" [min]="5" [max]="30">
+                    </p-inputNumber>
+                </div>
+                <button  pButton  pRipple (click)="onCreate()" type="button" label="Crear" class="p-button-raised p-button-success" [disabled]="!f.valid" ></button>
+                <button pButton pRipple type="button" label="Volver" class="p-button-raised p-button-warning" routerLink="/actividades"></button>
+               
+            </form>
+        </div>
+    </div>
+</div>

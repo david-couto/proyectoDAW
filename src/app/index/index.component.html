@@ -1,0 +1,36 @@
+
+
+<div class="container">
+    <div class="jumbotron text-center" >
+        <h1 *ngIf="nombreUsuario" class="display-4">Nos alegra verte,  {{nombreUsuario}}</h1>
+        <p class="lead">Gracias por formar parte de esta Gran Familia!!</p>
+        
+        <p>En menu de inicio podras realizar diferentes acciones, elige la que gustes</p>
+        <hr class="my-4">
+      </div>
+      <div class="d-flex">
+          <div>
+            <p-card class="text-center card text-bg-primary mb-3 "  header="Actividades" [style]="{'margin-bottom': '2em'}">
+                <p>En PuceFit disponemos de una amplia gama de actividades que abarcan todos las categorias y dificultades, desde Actividades
+                    cortas y sencillas para principantes, como actividades complejas para gente mas experimentada
+                </p>
+                <p>Haz click en el boton y accede a nuestro catalogo de actividades!!</p>
+                    <p-button icon="pi pi-new" routerLink="/actividades" label="Ir a Actividades"></p-button>
+            </p-card>
+            <p-card header="Clases"  class="text-center card text-bg-primary mb-3 " [style]="{ 'margin-bottom': '2em'}">
+                <p>En este apartado podras ver las diferentes clases que estan disponibles y apuntarte a ellas siempre y cuando haya un hueco disponible
+                </p>
+                <p>Apuntate antes de que se agoten las plazas!!</p>
+                    <p-button icon="pi pi-new" routerLink="/clases" label="Ir a Clases"></p-button>
+            </p-card>
+            <p-card header="Calendario" class="text-center card text-bg-primary mb-3"  [style]="{ 'margin-bottom': '2em'}">
+                <p>En esta seccion podras consultar tu calendario con las diferentes clases a las que estas apuntado, asi como las clases pasadas</p>
+                <p>Accede ahora y no te olvides de tu siguiente clase!!</p>
+                    <p-button icon="pi pi-new"  routerLink="miCalendario" label="Ir a mi Calendario"></p-button>
+            </p-card>
+
+          </div>
+      
+</div>
+</div>
+

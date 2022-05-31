@@ -1,0 +1,7 @@
+<p-menubar [model]="items">
+  <div>
+      <input type="text" pInputText placeholder="Search">
+      <button type="button" *ngIf="isLogged" pButton label="Logout" icon="pi pi-power-off" style="margin-left:.25em" (click)="onLogOut()" ></button>
+      <button type="button" *ngIf="!isLogged" pButton label="LogIn" icon="pi pi-power-on" style="margin-left:.25em" routerLink="/login" ></button>
+  </div>
+</p-menubar>

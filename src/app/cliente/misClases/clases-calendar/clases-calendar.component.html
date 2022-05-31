@@ -1,0 +1,44 @@
+<div class='demo-app'>
+
+   
+    <div class='demo-app-main'>
+      <full-calendar
+        *ngIf='calendarVisible'
+        [options]='calendarOptions'
+      ></full-calendar>
+    </div>
+  
+  </div>
+  <p-dialog *ngIf="claseExists" header="Informacion de la Clase" [(visible)]="displayModal" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+  [draggable]="false" [resizable]="true">
+
+    
+  <div class="p-field p-col-12 p-md-2">
+    <p>Nombre Actividad : {{clase.actividad.nombre}}</p>
+  </div>
+  <div class="p-field p-col-12 p-md-2">
+      Categoria : {{clase.actividad.categoria}}
+  </div>
+  <div class="p-field p-col-12 p-md-2">
+    Dificultad: {{ clase.actividad.dificultad}}
+  </div> 
+  <div class="p-field p-col-12 p-md-2">
+    Monitor: {{clase.monitor}}
+  </div>
+  <div class="p-field p-col-12 p-md-2">
+    Fecha: {{clase.fechaClase}}
+  </div>
+  <div class="p-field p-col-12 p-md-2">
+    Hora Inicio : {{clase.horaInicio}} - Hora Final : {{clase.horaFin}}
+  </div>
+  <div class="p-field p-col-12 p-md-2">
+    Numero Asistentes: {{clase.numAsistentes}} / {{clase.actividad.numMaxAsistentes}}
+  </div>
+  <p-button *ngIf="(estaApuntadoEnClase(clase))?true:false"  label="Desapuntarse" icon="pi pi-new" (onClick)="updateAsistenteClase()"  ></p-button>
+				
+  <p-button *ngIf="(!estaApuntadoEnClase(clase))?true:false"  [disabled]="(clase.numAsistentes>=clase.actividad.numMaxAsistentes || estaImpartiendoClase(clase)) ? true:false" label="Apuntarse" icon="pi pi-new" (onClick)="updateAsistenteClase(clases.id)"  ></p-button>
+  <ng-template pTemplate="footer">
+    <p-button icon="pi pi-times" (click)="closeModalDialog()" label="Cerrar"></p-button>
+  </ng-template>
+
+</p-dialog>

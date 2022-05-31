@@ -1,0 +1,39 @@
+
+
+
+<div class="container d-flex justify-content-center m-2">
+    
+   
+  <div class="surface-card p-4 shadow-2 border-round w-full lg:w-6">
+      <div class="text-center mb-5">
+          <img src="assets/images/logo.jfif" alt="Image" height="50" class="mb-3">
+          <div class="text-900 text-3xl font-medium mb-3">Unete a Nosotros!!</div>
+          <span class="text-600 font-medium line-height-3">Dispones de una cuenta?</span>
+          <a class="font-medium no-underline ml-2 text-blue-500 cursor-pointer" routerLink="/login">Inicia sesion</a>
+      </div>
+      <form #f="ngForm" (ngSubmit)="onRegister()" novalidate>
+      <div>
+        
+          <label for="nombreUsuario" class="block text-900 font-medium mb-2">Nombre de Usuario</label>
+          <input id="nombreUsuario" name="nombreUsuario" type="text" pInputText class="w-full mb-3" [(ngModel)]="nombreUsuario" required minlength="5">
+  
+          <label for="password" class="block text-900 font-medium mb-2">Contraseña</label>
+          <input id="password" name="password" type="password" pInputText class="w-full mb-3" [(ngModel)]="password" required minlength="5">
+          <label for="nombre" class="block text-900 font-medium mb-2">Nombre</label>
+          <input id="nombre" name="nombre" type="text" pInputText class="w-full mb-3" [(ngModel)]="nombre" required minlength="5">
+          <label for="email" class="block text-900 font-medium mb-2">Email</label>
+          <input id="email" name="email" type="email" pInputText class="w-full mb-3" [(ngModel)]="email" pattern="[^@\s]+@[^@\s]+\.[^@\s]+"  required>
+         
+            <label for="fecha" class="block text-900 font-medium mb-2">Fecha</label>
+            <p-calendar name="fecha" [(ngModel)]="fechaNacimiento"  [showIcon]="true" inputId="icon" dateFormat="dd/mm/yy" [maxDate]="maxDate" required="true" ></p-calendar>
+            <label for="dni" class="block text-900 font-medium mb-2">DNI</label>
+            <input id="dni" name="dni" type="text" pInputText class="w-full mb-3" [(ngModel)]="dni" required pattern="^[0-9]{8}[TRWAGMYFPDXBNJZSQVHLCKE]$">
+          
+  
+          <button pButton pRipple label="Registrarse" icon="pi pi-user" class="w-full" [disabled]="!f.valid" type="submit"></button>
+     
+      </div>
+  </form>
+  </div>
+  
+  </div>
